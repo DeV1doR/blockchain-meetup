@@ -32,6 +32,7 @@ ARGS1=$(BASE_ARGS) \
 	--minerthreads=1
 
 GEN_ADDR := $(shell $(NODE) $(BASE_ARGS) --password=$(PSWD_FILE) account new | head -1 | cut -d "{" -f2 | cut -d "}" -f1)
+GET_FILE_WITH_ADDR := $(shell find $(KEYSTORE1) -type f -name \*$(GEN_ADDR))
 
 console:
 	$(NODE) $(BASE_ARGS) attach $(IPC_FILE1)
@@ -40,7 +41,16 @@ sendfrom:
 	$(NODE) $(BASE_ARGS) --exec 'personal.unlockAccount(eth.coinbase, "$(PSWD)", 2); quickSend(eth.coinbase, "$(ADDRESS)", $(AMOUNT));' attach $(IPC_FILE1)
 
 account:
-	python -c 'import binascii; import eth_keyfile; private_key = binascii.hexlify(eth_keyfile.extract_key_from_keyfile("$(shell find $(KEYSTORE1) -type f -name \*$(GEN_ADDR))", "${PSWD}")).decode("utf-8"); print("Generated private key (hex): 0x%s" % private_key); from m1_pk_2_pb_2_addr import private_to_public_key, public_to_address; public_key = private_to_public_key(private_key); print("Derived public key (hex uncompressed): 0x04%s" % public_key); ethereum_address = public_to_address(public_key); print("Derived address (hex): 0x%s" % ethereum_address);'
+	python -c 'import binascii;\
+import eth_keyfile;\
+private_key = binascii.hexlify(eth_keyfile.extract_key_from_keyfile("$(GET_FILE_WITH_ADDR)", "${PSWD}")).decode("utf-8");\
+print("Generated private key (hex): 0x%s" % private_key);\
+from m1_pk_2_pb_2_addr import private_to_public_key, public_to_address;\
+public_key = private_to_public_key(private_key);\
+print("Derived public key (hex uncompressed): 0x04%s" % public_key);\
+ethereum_address = public_to_address(public_key);\
+print("Derived address (hex): 0x%s" % ethereum_address);\
+'
 
 start:
 	mkdir -p $(DATADIR1) $(KEYSTORE1)

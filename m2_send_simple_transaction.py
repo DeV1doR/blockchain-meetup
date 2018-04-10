@@ -40,8 +40,8 @@ async def get_tx_until_mined(client, tx_id):
 if __name__ == '__main__':
     # prepare payload data
     data = {
-        'from_': '0xaacfd449690e7581f75b89861a76df37f88ce4d8',
-        'to': '0x1e6d3e3474705373e6fe211823dffd0e512ec531',
+        'from_': '0xad43a314ab316cfea09d1d464a9dba1b62acf963',
+        'to': '0xde5e2aab4a04f5c3b6b39fde028dc592bb7b902b',
         'data': '0x' + binascii.hexlify(b'Empty msg').decode('utf-8'),
         'gas': 22000,
         'gas_price': 0,
