@@ -37,6 +37,9 @@ GET_FILE_WITH_ADDR := $(shell find $(KEYSTORE1) -type f -name \*$(GEN_ADDR))
 console:
 	$(NODE) $(BASE_ARGS) attach $(IPC_FILE1)
 
+unlock:
+	$(NODE) --exec 'personal.unlockAccount("$(ADDRESS)", "$(PSWD)", 100);' attach $(IPC_FILE1)
+
 sendfrom:
 	$(NODE) $(BASE_ARGS) --exec 'personal.unlockAccount(eth.coinbase, "$(PSWD)", 2); quickSend(eth.coinbase, "$(ADDRESS)", $(AMOUNT));' attach $(IPC_FILE1)
 
