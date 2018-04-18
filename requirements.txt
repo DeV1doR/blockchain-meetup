@@ -1,5 +1,4 @@
 ecdsa==0.13
-pysha3==1.0.2
 ethereum==2.3.1
 aioethereum==0.2.2
 eth-keyfile==0.5.1
